@@ -1,5 +1,6 @@
 import re
 
+
 def id_from_url(url):
     """
     Tries to extract the application ID from a Steam store URL.

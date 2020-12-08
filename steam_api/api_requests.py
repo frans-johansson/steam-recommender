@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 
+
 def get_owned_games(user_id):
     """
     Returns a Pandas `Series` with all games owned by the given user. Index is the application ID's.
@@ -8,7 +9,7 @@ def get_owned_games(user_id):
     """
     url = f"https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=8D0F87EEE7053D55B0A5ED8CD94D3202&steamid={user_id}&format=json"
     response = requests.request("GET", url)
-    
+
     try:
         data = response.json()['response']['games']
         df = pd.DataFrame(data)
@@ -28,7 +29,7 @@ def get_game_description(game_id):
     """
     url = f"https://store.steampowered.com/api/appdetails/?appids={game_id}"
     response = requests.request("GET", url)
-    
+
     try:
         return response.json()[game_id]['data']['short_description']
     except:
