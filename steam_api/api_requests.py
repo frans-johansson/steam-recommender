@@ -22,6 +22,23 @@ def get_owned_games(user_id):
     return df
 
 
+def get_friends(user_id):
+    """
+    Returns a Pandas `Series` with all the friends' Steam ID's of the given user.
+    """
+    url =  f"http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=8D0F87EEE7053D55B0A5ED8CD94D3202&steamid={user_id}&relationship=friend"
+    response = requests.request("GET", url)
+    
+    friend_ids = []
+    try:
+        json_data = response.json()['friendslist']['friends']
+        friend_ids = [friend['steamid'] for friend in json_data]
+    except:
+        pass
+
+    return friend_ids
+
+
 def get_game_description(game_id):
     """
     Returns the short description from the Steam store page for a given application ID.
