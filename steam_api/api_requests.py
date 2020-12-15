@@ -16,8 +16,8 @@ def get_owned_games(user_id):
         df.set_index('appid', inplace=True)
         df = df['playtime_forever']
     except KeyError:
-        data = {}
-        df = pd.DataFrame(data)
+        data = []
+        df = pd.Series(data)
 
     return df
 
@@ -48,6 +48,7 @@ def get_game_description(game_id):
     response = requests.request("GET", url)
 
     try:
-        return response.json()[game_id]['data']['short_description']
+        # return response.json()[game_id]['data']['short_description']
+        return response.json()[game_id]['data']
     except:
         return None
