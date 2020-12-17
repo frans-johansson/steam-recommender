@@ -13,9 +13,11 @@ def get_owned_games(user_id):
     try:
         data = response.json()['response']['games']
         df = pd.DataFrame(data)
+        df['appid'] = df['appid'].astype('string')
         df.set_index('appid', inplace=True)
         df = df['playtime_forever']
-    except KeyError:
+    except KeyError as e:
+        print(f'Failed to get owned games for user {user_id}')
         data = []
         df = pd.Series(data)
 
@@ -26,20 +28,21 @@ def get_friends(user_id):
     """
     Returns a Pandas `Series` with all the friends' Steam ID's of the given user.
     """
-    url =  f"http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=8D0F87EEE7053D55B0A5ED8CD94D3202&steamid={user_id}&relationship=friend"
+    url = f"http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=8D0F87EEE7053D55B0A5ED8CD94D3202&steamid={user_id}&relationship=friend"
     response = requests.request("GET", url)
-    
+
     friend_ids = []
     try:
         json_data = response.json()['friendslist']['friends']
         friend_ids = [friend['steamid'] for friend in json_data]
     except:
+        print(f'Failed to get friends for user {user_id}')
         pass
 
     return friend_ids
 
 
-def get_game_description(game_id):
+def get_game_data(game_id):
     """
     Returns the short description from the Steam store page for a given application ID.
     May return `None` if an API error occurs.
@@ -51,4 +54,5 @@ def get_game_description(game_id):
         # return response.json()[game_id]['data']['short_description']
         return response.json()[game_id]['data']
     except:
+        print(f'Failed to get game data for {game_id}')
         return None
