@@ -10,3 +10,13 @@ def playtime_ratio_scorer(estimator, X, y):
     inliers = y[pred > 0]
     outliers = y[pred < 0]
     return inliers.mean() / (inliers.std() * outliers.mean())
+
+
+def get_ratio(test_data, users_games, rec_games):
+    all_games = test_data.columns
+    tot_recommends = list(set(all_games).intersection(rec_games))
+    user_games_in_test = list(set(all_games).intersection(users_games))
+    
+    ratio = len(tot_recommends)/len(user_games_in_test)
+
+    return ratio
