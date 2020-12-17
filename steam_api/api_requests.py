@@ -17,7 +17,7 @@ def get_owned_games(user_id):
         df.set_index('appid', inplace=True)
         df = df['playtime_forever']
     except KeyError as e:
-        print(f'Failed to get owned games for user {user_id}')
+        # print(f'Failed to get owned games for user {user_id}')
         data = []
         df = pd.Series(data)
 
