@@ -1,2 +1,5 @@
 theme: jekyll-theme-minimal
-logo: /assets/header.png
+title: Recommender systems for Steam games
+description: >-
+  This project blog presents the implementation of four recommender systems for the Steam gaming platform.
+logo: /assets/logo.png
