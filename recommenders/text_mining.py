@@ -28,4 +28,4 @@ class LSA:
         df = df.transpose()
         df = df.apply(
             lambda idx: games.loc[index[idx].values]['name'].values, axis=1)
-        return df.apply(lambda games: games[np.isin(games, owned_games, invert=True)][:10])
+        return df.apply(lambda games: games[np.isin(games, owned_games, invert=True)][:n])
