@@ -336,8 +336,8 @@ def get_ALS_recommendations(model, user_id, ui_train, n=10):
 
 als_model = fit_ALS_model(ui_train.T)
 # Here the user_id is somewhat confusingly the index as opposed to a Steam user ID
-# Since the ID of the user was appended to the end of the list, they should have the last index
-rec_idxs = get_ALS_recommendations(als_model, ui_data.shape[0]-1, ui_train, n=10)
+# Pandas Index objects fortunately have a get_loc function which gives us the numeric index
+rec_idxs = get_ALS_recommendations(als_model, ui_data.index.get_loc(id), ui_train, n=10)
 # Index data is translated to game ID data
 rec_ids = ui_data.columns[rec_idxs]
 
