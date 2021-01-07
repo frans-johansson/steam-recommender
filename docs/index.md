@@ -3,7 +3,7 @@
 ## Introduction
 
 Hello! This tutorial blog will walk you through the steps to implement your very own recommender system. In our case, the recommender system has been designed to work with the [Steam gaming platform][steam], but the ideas could really be applied to any platform you can imagine!
-
+ 
 First and foremost, we believe some introductions are in order. We are three Master's degree students in Media Technology at Linköping University, and we are the ones taking you on this journey down recommender system lane:
 
 - Frans Johansson, [@frans-johansson](https://github.com/frans-johansson/)
@@ -38,6 +38,10 @@ but for sake of brevity we will not append these lines of code to every example.
 ## The data
 
 *Data from the Steam CSV file*
+
+There was two different data that was used in this project. One part of the data came from csv file that had the data from [scraped the website steam][scraped]. The data is a few years old, so take in mind that the data is not up to date. The second data set came from a [steam web API][steam api]. The perk of using the web API is that the data is up to date, and the user can actually insert their own steam ID to get result for themselves. 
+
+The data needed to be tempered with, to be filtered. From these data sets we got a lot of information that is unneccesary for the purpose of this project. In the code blocks underneath we basically make the code more functional for the project. 
 
 ```python
 def id_from_url(url):
@@ -468,6 +472,10 @@ In conclusion we are quite happy with the results, we have four different kinds 
 We also had some problems with the API which sometimes just stopped working and failed to give any data at all. This can be seen in the showcase of the recommendations for the SVD with GD algorithm where it failed to get the game data for the game with the id 10000.  This made working with the project really annoying sometimes but in the end it worked out. We thought that the project  was  fun but do feel that it would have been easier to evaluate the different methods if we actually had some data on user behavior and that would be the next step if you would want to develop the project further. 
 
 Thank you for reading!
+
+# Data links
+[steam api]: https://partner.steamgames.com/doc/webapi_overview "Steam web API"
+[scraped]: https://www.kaggle.com/trolukovich/steam-games-complete-dataset "Scraped data from steam website"
 
 [steam]: https://store.steampowered.com/ "Steam store page"
 [repository]: https://github.com/frans-johansson/steam-recommender "Project repository with complete code base"
