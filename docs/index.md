@@ -450,8 +450,24 @@ Failed to get game data for 10000
 Similarly to the ALS method, we generate recommendations for all users in `u_to_test` in order to evaluate the model.
 
 ## Evaluating results
+Evaluating our algorithms has been quite hard mainly because our data is unlabeled. We don't know if the user ends up liking the recommendations that are presented to them since our data comes from a snapshot in time. This makes it hard to evaluate the methods especially the content based ones. We had to rely on our gut feeling if the recommended games were games that the users would have liked. When the algorithms were used on our own profiles we feel like the resulting games were that we would have enjoyed playing. But we have no real way to test this without having user behavior.  This would not be a problem for Valve since they can track user behavior over time. They have access to information like purchase history and whether or not the user leaves a review on the game or not. With this information they can evaluate and see if the games that are recommended end up being purchased or not. However the article “A Gentle Introduction to Recommender Systems with Implicit Feedback” mentioned earlier did propose a way to evaluate a collaborative filtering method which we used so for the ALS and SVD with GD algorithms.  
 
+In most machine learning applications the model is tested on data that it has not seen before. This is usually done by creating a test set by separating a certain percent of the data from the training set. However this does not work with collaborative filtering since you need all of the user/item interactions to find a proper matrix factorization. Instead, what we did in order to evaluate the collaborative filtering methods a percentage of the user/item interactions in the model were masked resulting in a training and a testing set, see the figure below.
+
+![wat](/assets/data.png)
+
+These masked user/item interactions are games that the users have played and we draw the conclusion that it is a game that they like. Now if we run the collaborative filtering models  on the training data we can see how many of these masked games were recommended to the user. Since all these masked games are in some sense liked by the user we can draw the conclusion that the recommendations were good. In order to compare the ALS algorithm with the SVD method we calculate a ratio between the number of games that the user already owned that was recommended and all the games that the users had in the test data. The resulting ratios are the following:
+```text
+Als: 0.001261755735577173
+SVD_ED : 0.001481534355799284]
+```
+ From this we can see that the recommendations from the SVD_ED algorithm gave a slightly better results. 
 ## Conclusion
+In conclusion we are quite happy with the results, we have four different kinds of methods for generating recommendations and all of them give results that seem reasonable.  When used on our own steam profiles we get recommendations that feel correct for us.  However the results from the content based methods can be odd for example the recommendations for the game The withcher 3:Wild hunt based on the META information the majority of the recommendations are DLC:s of the same game. Which makes sense since they will most likely have the same META information but if you already own the game it’s likely that you already know about the DLC:s thus you would probably rather be recommended to another game in the same genre. The recommendations based on the publishers can also yield bad results since a publisher can publish games in all kinds of genres and don't really affect the development of the game.  Thus resulting in games that can be totally different from each other. 
+
+We also had some problems with the API which sometimes just stopped working and failed to give any data at all. This can be seen in the showcase of the recommendations for the SVD with GD algorithm where it failed to get the game data for the game with the id 10000.  This made working with the project really annoying sometimes but in the end it worked out. We thought that the project  was  fun but do feel that it would have been easier to evaluate the different methods if we actually had some data on user behavior and that would be the next step if you would want to develop the project further. 
+
+Thank you for reading!
 
 [steam]: https://store.steampowered.com/ "Steam store page"
 [repository]: https://github.com/frans-johansson/steam-recommender "Project repository with complete code base"
