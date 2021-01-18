@@ -177,7 +177,7 @@ tf = CountVectorizer(stop_words='english')
 content_data = bags.apply(tf.fit_transform)
 ```
 
-This leaves us with each game in the Steam store data set being represented by a vector where each dimension corresponds to the count of some genre, developer, user-added tag etc. for the given game. Now vectors are things we easily compare with each other! One fairly common way of comparing vectors in high-dimensional spaces such as these, is to use the [cosine similarity][cosine similarity wikipedia] which measures the angle between two vectors using their inner product and normalizing this by the vector norms. We will do something similar here and only compute the inner product as suggested by [this handy article][content-based article]. This can be efficiently performed by the `linear_kernel` transformation from sklearn. To generate suggestions to a user we will now first select a game they have already played and enjoyed. Since this kind of data is not directly available to us, we will settle on selecting one of their games with highest total playtime; in reality, a company would likely implement more sophisticated algorithms for selecting which games to genereate the recommendations from, we will simply select the user’s top played games for this example. This chosen game is then compared to every other game in the data set using the `linear_kernel` transformation, and the five games with highest similarity that are not already owned by the user are selected as recommendations.
+This leaves us with each game in the Steam store data set being represented by a vector where each dimension corresponds to the count of some genre, developer, user-added tag etc. for the given game. Now vectors are things we easily compare with each other! One fairly common way of comparing vectors in high-dimensional spaces such as these, is to use the [cosine similarity][cosine similarity wikipedia] which measures the angle between two vectors using their inner product and normalizing this by the vector norms. We will do something similar here and only compute the inner product as suggested by [this handy article][content-based article]. This can be efficiently performed by the `linear_kernel` transformation from sklearn. To generate suggestions to a user we will now first select a game they have already played and enjoyed. Since this kind of data is not directly available to us, we will settle on selecting one of their games with highest total playtime; in reality, a company would likely implement more sophisticated algorithms for selecting which games to generate the recommendations from, we will simply select the user’s top played games for this example. This chosen game is then compared to every other game in the data set using the `linear_kernel` transformation, and the five games with highest similarity that are not already owned by the user are selected as recommendations.
 
 ```python
 from sklearn.metrics.pairwise import linear_kernel
@@ -465,8 +465,8 @@ These masked user/item interactions are games that the users have played and we 
 ALS: 0.001261755735577173
 SVD with GD : 0.001481534355799284
 ```
-<<<<<<< HEAD
-From this we can see that the recommendations from the SVD with GD algorithm gave a slightly better results. This shows the code for calculating the ration. 
+From this we can see that the recommendations from the SVD_ED algorithm gave a slightly better results. But since the difference is so small it doesnt realy tell us that much. This is most likley because we hade to little data and with a bigger data set the difference would have been bigger.
+
 ```python
  def get_ratio(test_data, users_games, rec_games):
     all_games = test_data.columns
@@ -478,9 +478,6 @@ From this we can see that the recommendations from the SVD with GD algorithm gav
     return ratio
 ```
 
-=======
- From this we can see that the recommendations from the SVD_ED algorithm gave a slightly better results. But since the difference is so small it doesnt realy tell us that much. This is most likley because we hade to little data and with a bigger data set the difference would have been bigger. 
->>>>>>> Finishing touches
 ## Conclusion
 In conclusion we are quite happy with the results, we have four different kinds of methods for generating recommendations and all of them give results that seem reasonable.  When used on our own steam profiles we get recommendations that feel correct for us. However the results from the content based methods can be odd for example the recommendations for the game The Witcher 3: Wild Hunt based on the META information the majority of the recommendations are DLC:s of the same game. Which makes sense since they will most likely have the same META information but if you already own the game it’s likely that you already know about the DLC:s thus you would probably rather be recommended to another game in the same genre. The recommendations based on the publishers can also yield bad results since a publisher can publish games in all kinds of genres and don't really affect the development of the game. Thus resulting in games that can be totally different from each other. 
 
