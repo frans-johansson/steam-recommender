@@ -278,9 +278,9 @@ A problem we quickly run into though, is how we should quantify how much a given
 
 [This article][gentle introduction] provides a nice introduction to using implicit feedback data in collaborative filtering systems, based on research papers on the subject; and [this blog][game recommendation system], which we have taken a great deal of inspiration from, provides some additional implememtation and algorithm ideas. The main problem here, it turns out, is approximating a sparse user-item matrix through a full matrix decomposition such that predicted user-item interactions can be obtained via the dot product of the two matrix factors.
 
-![Approximate decomposition of a user-item matrix](/assets/matrix_decomp.png)
+![Approximate decomposition of a user-item matrix](/assets/MatrixDecomp.png)
 
-This type of prediction model (commonly referred to as a *matrix factorization model*) has proven to be quite effective when working with implicit feedback. This was demonstrated in the [Netflix Prize competition][netflix prize], as discussed in [this article][recommender systems netflix].
+In this image, the matrix R represents the full user-item interaction matrix. This matrix is then decomposed into two factors; the matrix U containing underlying user data and the other matrix V containing underlying item data. This type of prediction model (commonly referred to as a *matrix factorization model*) has proven to be quite effective when working with implicit feedback. This was demonstrated in the [Netflix Prize competition][netflix prize], as discussed in [this article][recommender systems netflix].
 
 In less mathematical terms, what we want to accomplish is finding an approximation of the original user-item data where the missing values, i.e. the items that some user has not interacted with, are predicted based on all other known values. The two aforementioned resources suggest two main algorithms for accomplishing this: the Alternating Least Squares (ALS) algorithm and the SVD through Gradient Descent (GD) algorithm. Both of which we will take a look at here!
 
@@ -288,7 +288,7 @@ In less mathematical terms, what we want to accomplish is finding an approximati
 
 The ALS algorithm is available in Python through the [`implicit` library](https://github.com/benfred/implicit), which we will install with `pip install implicit`, making sure that we are sourced into our *venv* (this is all in the *requirements.txt*, so as anyone following along thus far should be fine). This simplifies our work significantly, as the majority of code we need to write ourselves has to do with data formatting.
 
-We will first collect the necessary user-item data using our API helper functions `get_friends(id)` which returns the the friends of some user as a list of user IDs, and `get_owned_games(id)` which gets us total playtime data for the games owned by a given user. The resulting `DataFrame` will contain a large bit of *NaN* values which are imputed with the value `0.0`. Any columns (corresponding to items) that have no non-zero data are also removed (this might happen due to users owning a game without having any hours played, which in the context of implicit feedback just amounts to superfluous data).
+We will first collect the necessary user-item data using our API helper functions `get_friends(id)` which returns the friends of some user as a list of user IDs, and `get_owned_games(id)` which gets us total playtime data for the games owned by a given user. The resulting `DataFrame` will contain a large bit of *NaN* values which are imputed with the value `0.0`. Any columns (corresponding to items) that have only the value zero as data are also removed (this might happen due to users owning a game without having any hours played, which in the context of implicit feedback just amounts to superfluous data).
 
 ```python
 def make_user_item_data(id):
@@ -410,7 +410,7 @@ This function also takes user-item training data, but unlike the ALS model this 
 ui_train_data = pd.DataFrame.sparse.from_spmatrix(ui_train)
 ```
 
-Next, we implemented a function to genereate recommendations to a user given the predicted implicit feedback from `SVD_gradient_descent`.
+Next, we implemented a function to generate recommendations to a user given the predicted implicit feedback from `SVD_gradient_descent`.
 
 ```python
 def get_EM_recommendations(predicted_data, user, owned, n=10):
@@ -465,6 +465,7 @@ These masked user/item interactions are games that the users have played and we 
 ALS: 0.001261755735577173
 SVD with GD : 0.001481534355799284
 ```
+<<<<<<< HEAD
 From this we can see that the recommendations from the SVD with GD algorithm gave a slightly better results. This shows the code for calculating the ration. 
 ```python
  def get_ratio(test_data, users_games, rec_games):
@@ -477,6 +478,9 @@ From this we can see that the recommendations from the SVD with GD algorithm gav
     return ratio
 ```
 
+=======
+ From this we can see that the recommendations from the SVD_ED algorithm gave a slightly better results. But since the difference is so small it doesnt realy tell us that much. This is most likley because we hade to little data and with a bigger data set the difference would have been bigger. 
+>>>>>>> Finishing touches
 ## Conclusion
 In conclusion we are quite happy with the results, we have four different kinds of methods for generating recommendations and all of them give results that seem reasonable.  When used on our own steam profiles we get recommendations that feel correct for us. However the results from the content based methods can be odd for example the recommendations for the game The Witcher 3: Wild Hunt based on the META information the majority of the recommendations are DLC:s of the same game. Which makes sense since they will most likely have the same META information but if you already own the game it’s likely that you already know about the DLC:s thus you would probably rather be recommended to another game in the same genre. The recommendations based on the publishers can also yield bad results since a publisher can publish games in all kinds of genres and don't really affect the development of the game. Thus resulting in games that can be totally different from each other. 
 
